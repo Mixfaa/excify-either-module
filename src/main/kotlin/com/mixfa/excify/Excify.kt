@@ -1,8 +1,9 @@
 package com.mixfa.excify
 
 import arrow.core.Either
+import arrow.core.memoize
 
-class UnresolvedValueException(val value: Any) : FastThrowable(value.toString())
+class UnresolvedValueException(val value: Any) : FastException(value.toString())
 
 /**
  * Arrow`s Either
@@ -14,6 +15,15 @@ fun <T> EitherError<T>.orThrow(): T = when (this) {
     is Either.Right -> this.value
 }
 
+private val memorizedConstructor = ::FastException.memoize()
+
+/**
+ * Makes instance of FastException, for same args returns same instance
+ * @see com.mixfa.excify.FastException
+ * @see arrow.core.memoize
+ */
+fun makeMemorizedException(message: String) = memorizedConstructor(message)
+
 /**
  * excify scopes
  */
@@ -22,7 +32,7 @@ object Excify {
 
     inline fun <reified TargetType> rethrow(block: () -> Any): TargetType = when (val returnedValue = block()) {
         is TargetType -> returnedValue
-        is FastThrowable -> throw returnedValue
+        is FastException -> throw returnedValue
         else -> throw UnresolvedValueException(returnedValue)
     }
 
