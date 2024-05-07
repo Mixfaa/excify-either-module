@@ -1,4 +1,4 @@
-package com.mixfa.`excify-either`
+package com.mixfa.excify
 
 import arrow.core.Either
 import arrow.core.memoize
