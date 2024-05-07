@@ -1,7 +1,8 @@
-package com.mixfa.excify
+package com.mixfa.`excify-either`
 
 import arrow.core.Either
 import arrow.core.memoize
+import com.mixfa.excify.FastException
 
 class UnresolvedValueException(val value: Any) : FastException(value.toString())
 
@@ -22,7 +23,7 @@ private val memorizedConstructor = ::FastException.memoize()
  * @see com.mixfa.excify.FastException
  * @see arrow.core.memoize
  */
-fun makeMemorizedException(message: String) = memorizedConstructor(message)
+public fun makeMemorizedException(message: String) = memorizedConstructor(message)
 
 /**
  * excify scopes
